@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BullSteel Online</title>
+</head>
+<body>
+  <h1>รายการสินค้า (ตัวอย่าง)</h1>
+  <table border="1">
+    <tr>
+      <th>PN</th>
+      <th>Name</th>
+      <th>Price</th>
+    </tr>
+    {% for row in data %}
+    <tr>
+      <td>{{ row[0] }}</td>
+      <td>{{ row[1] }}</td>
+      <td>{{ row[2] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
