@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 import pymysql
-import os
+import os  # 🔴 อยู่ด้านบนสุด ไม่ต้องซ้ำข้างล่างอีก
 
 app = Flask(__name__)
 
@@ -26,4 +26,5 @@ def index():
         return f"Error: {e}"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))       # 🔴 ใช้พอร์ตที่ Render กำหนด
+    app.run(host="0.0.0.0", port=port, debug=True) # 🔴 เปิดทุก IP
