@@ -18,7 +18,7 @@ def index():
     try:
         connection = pymysql.connect(**db_config)
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM product LIMIT 10")
+            cursor.execute("SELECT * FROM metalsheet5.product LIMIT 10")
             rows = cursor.fetchall()
         connection.close()
         return render_template("index.html", data=rows)
