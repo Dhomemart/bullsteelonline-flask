@@ -1,0 +1,17 @@
+<h1>📈 Dashboard</h1>
+<canvas id="chart" width="600" height="300"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('chart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ stats.keys()|list }},
+        datasets: [{
+            label: 'จำนวนเรคคอร์ดในแต่ละตาราง',
+            data: {{ stats.values()|list }},
+            backgroundColor: 'rgba(0,123,255,0.5)'
+        }]
+    }
+});
+</script>

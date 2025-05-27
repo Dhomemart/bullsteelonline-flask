@@ -1,7 +1,6 @@
 from flask import Flask, render_template, session, redirect, url_for
 from routes.product import product_bp
 from datetime import datetime
-import os
 
 app = Flask(__name__)
 app.secret_key = "mysecret"
@@ -21,5 +20,4 @@ def status():
 if __name__ == "__main__":
     with open("flask_log.txt", "a", encoding="utf-8") as f:
         f.write(f"[{start_time.strftime('%Y-%m-%d %H:%M:%S')}] Flask started\n")
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
