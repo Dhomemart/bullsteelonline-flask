@@ -29,7 +29,7 @@ def show_product():
         gcodes = cur.fetchall()
 
         sql = """SELECT gcode, id, code, name, qty, unit FROM product WHERE 1=1"""
-        count_sql = "SELECT COUNT(*) FROM product WHERE 1=1"
+        count_sql = "SELECT COUNT(*) FROM product"
 
         params = []
 
