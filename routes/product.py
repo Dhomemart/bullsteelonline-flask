@@ -28,9 +28,9 @@ def show_product():
         cur.execute("SELECT code, name FROM productgroup ORDER BY code")
         gcodes = cur.fetchall()
 
-        sql = """SELECT gcode, id, code, name, qty, unit 
-                 FROM product WHERE qty 1= 1"""
-        count_sql = "SELECT COUNT(*) FROM product WHERE qty 1= 1"
+        sql = """SELECT gcode, id, code, name, qty, unit FROM product WHERE 1=1"""
+        count_sql = "SELECT COUNT(*) FROM product WHERE 1=1"
+
         params = []
 
         if gcode:
