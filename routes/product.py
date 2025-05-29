@@ -56,9 +56,7 @@ def show_product():
     conn.close()
 
     return render_template("product.html",
-                           products=products,
-                           gcodes=gcodes,
-                           keyword=keyword,
-                           gcode=gcode,
-                           page=page,
-                           total_pages=math.ceil(total / per_page))
+                       data=products,
+                       columns=["gcode", "id", "code", "name", "qty", "unit"],
+                       ...
+)
