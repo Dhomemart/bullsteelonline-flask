@@ -25,7 +25,7 @@ def show_product():
 
     conn = get_connection()
     with conn.cursor() as cur:
-        cur.execute("SELECT code, name FROM Productgroup ORDER BY code")
+        cur.execute("SELECT code, name FROM productgroup ORDER BY code")
         gcodes = cur.fetchall()
 
         sql = """SELECT gcode, id, code, name, qty, unit 
