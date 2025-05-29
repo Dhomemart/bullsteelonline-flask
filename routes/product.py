@@ -28,8 +28,9 @@ def show_product():
         cur.execute("SELECT code, name FROM productgroup ORDER BY code")
         gcodes = cur.fetchall()
 
-        sql = """SELECT gcode, id, code, name, qty, unit FROM product WHERE 1=1"""
-        count_sql = "SELECT COUNT(*) FROM product WHERE 1=1"
+        sql = """SELECT gcode, id, code, name, qty, unit FROM product WHERE qty > 0"""
+        count_sql = "SELECT COUNT(*) FROM product WHERE qty > 0"
+
         params = []
         count_params = []
 
@@ -45,7 +46,7 @@ def show_product():
             params.append(f"%{keyword}%")
             count_params.append(f"%{keyword}%")
 
-        sql += " ORDER BY code LIMIT %s OFFSET %s"
+        sql += " ORDER BY name LIMIT %s OFFSET %s"
         offset = (page - 1) * per_page
         params.extend([per_page, offset])
 
