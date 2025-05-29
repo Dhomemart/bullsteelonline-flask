@@ -65,8 +65,15 @@
                 {% for row in data %}
                 <tr>
                     {% for col in columns %}
-                    <td>{{ row[col] }}</td>
-                    {% endfor %}
+  		  <td>
+        		{% if col == "qty" %}
+            			{{ "{:,.2f}".format(row[col]) }}
+        	{% else %}
+            			{{ row[col] }}
+        		{% endif %}
+    </td>
+{% endfor %}
+
                 </tr>
                 {% endfor %}
             </tbody>
