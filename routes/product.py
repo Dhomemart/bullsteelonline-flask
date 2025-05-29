@@ -29,19 +29,21 @@ def show_product():
         gcodes = cur.fetchall()
 
         sql = """SELECT gcode, id, code, name, qty, unit FROM product WHERE 1=1"""
-        count_sql = "SELECT COUNT(*) FROM product"
-
+        count_sql = "SELECT COUNT(*) FROM product WHERE 1=1"
         params = []
+        count_params = []
 
         if gcode:
             sql += " AND gcode = %s"
             count_sql += " AND gcode = %s"
             params.append(gcode)
+            count_params.append(gcode)
 
         if keyword:
             sql += " AND name LIKE %s"
             count_sql += " AND name LIKE %s"
             params.append(f"%{keyword}%")
+            count_params.append(f"%{keyword}%")
 
         sql += " ORDER BY code LIMIT %s OFFSET %s"
         offset = (page - 1) * per_page
@@ -50,13 +52,17 @@ def show_product():
         cur.execute(sql, tuple(params))
         products = cur.fetchall()
 
-        cur.execute(count_sql, tuple(params[:len(params)-2]))
+        cur.execute(count_sql, tuple(count_params))
         total = cur.fetchone()['COUNT(*)']
+        total_pages = math.ceil(total / per_page)
 
     conn.close()
 
     return render_template("product.html",
-                       data=products,
-                       columns=["gcode", "id", "code", "name", "qty", "unit"],
-                       ...
-)
+                           data=products,
+                           columns=["gcode", "id", "code", "name", "qty", "unit"],
+                           keyword=keyword,
+                           gcodes=gcodes,
+                           selected_gcode=gcode,
+                           page=page,
+                           total_pages=total_pages)
