@@ -7,14 +7,15 @@ product_bp = Blueprint("product", __name__)
 
 def get_connection():
     return pymysql.connect(
-        host=os.getenv("MYSQL_HOST"),
-        port=int(os.getenv("MYSQL_PORT", 3306)),
-        user=os.getenv("MYSQL_USER"),
-        password=os.getenv("MYSQL_PASSWORD"),
-        database=os.getenv("MYSQL_DATABASE"),
+        host=os.getenv("RAILWAY_HOST"),
+        port=int(os.getenv("RAILWAY_PORT", 3306)),
+        user=os.getenv("RAILWAY_USER"),
+        password=os.getenv("RAILWAY_PASSWORD"),
+        database=os.getenv("RAILWAY_DATABASE"),
         charset='utf8mb4',
         cursorclass=pymysql.cursors.DictCursor
     )
+
 
 @product_bp.route("/product")
 def show_product():
