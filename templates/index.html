@@ -1,8 +1,45 @@
-<h1>📊 เมนูหลัก</h1>
-<ul>
-<li><a href="/product">📦 ข้อมูลสินค้า</a></li>
-<li><a href="/tables">📋 ตารางทั้งหมด</a></li>
-<li><a href="/dashboard">📈 Dashboard</a></li>
-<li><a href="/status">🧭 ตรวจสอบระบบ</a></li>
-<li><a href="/logout">🚪 ออกจากระบบ</a></li>
-</ul>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>เมนูหลัก - BullSteel</title>
+    <!-- 🔴 ใช้ Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 🔴 ใช้ไอคอน Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- 🔴 ตั้งค่า viewport ให้รองรับมือถือ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="bg-light">
+
+    <!-- 🔴 Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">📊 เมนูหลัก</a> <!-- 🔴 หัวเว็บ -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span> <!-- 🔴 ปุ่มสำหรับมือถือ -->
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto"> <!-- 🔴 จัดชิดขวา -->
+                    <li class="nav-item"><a class="nav-link" href="/product">📦 ข้อมูลสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tables">📋 ตารางทั้งหมด</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">📈 Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/status">🧭 ตรวจสอบระบบ</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning" href="/logout">🚪 ออกจากระบบ</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🔴 เนื้อหาหลัก (อาจเพิ่มได้ในอนาคต) -->
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="display-6">ยินดีต้อนรับสู่ระบบ BullSteel</h1>
+            <p class="text-muted">กรุณาเลือกเมนูด้านบนเพื่อดำเนินการ</p>
+        </div>
+    </div>
+
+    <!-- 🔴 Bootstrap JS (สำหรับ Navbar บนมือถือ) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
