@@ -68,7 +68,7 @@ def show_product():
             row["qty"] = 0.0
 
     return render_template("product.html",
-                           data=products,
+                           products=products,
                            columns=["gcode", "id", "code", "name", "qty", "unit"],
                            keyword=keyword,
                            gcodes=gcodes,

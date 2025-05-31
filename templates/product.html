@@ -4,7 +4,10 @@
   <h2 class="mb-3 text-center">
     📦 รายการสินค้าที่มี ในสต็อก บูลสตีล
   </h2>
-
+  <!-- ✅ แสดงจำนวนรายการด้านบนขวา -->
+    <div class="text-end mb-2">
+        <strong>พบทั้งหมด {{ products|length }} รายการ</strong>
+    </div>
   <form method="get" class="row g-2 align-items-center mb-4">
     <div class="col-md-4 col-12">
       <input type="text" name="q" class="form-control" placeholder="🔍 ค้นหาชื่อ..." value="{{ keyword }}">
@@ -39,7 +42,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for item in data %}
+    {% for item in products %}
 <tr>
   <td>{{ loop.index }}</td> 
       <td style="display:none;">{{ item.id }}</td> <!-- 🔴 ซ่อนไม่แสดง -->
