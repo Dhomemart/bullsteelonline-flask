@@ -1,46 +1,73 @@
-
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <title>รายการสินค้า</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
 <div class="container mt-4">
-    <h3 class="mb-3">รายการสินค้า</h3>
+  <h2 class="mb-3 text-center">
+    📦 รายการสินค้าที่มี ในสต็อก บูลสตีล
+  </h2>
 
-    <!-- 🔴 แสดงจำนวนรายการทั้งหมด -->
-    <div class="text-end mb-2">
-        <strong>พบทั้งหมด {{ data|length }} รายการ</strong>
+  <form method="get" class="row g-2 align-items-center mb-4">
+    <div class="col-md-4 col-12">
+      <input type="text" name="q" class="form-control" placeholder="🔍 ค้นหาชื่อ..." value="{{ keyword }}">
     </div>
+    <div class="col-md-4 col-12">
+      <select name="gcode" class="form-select">
+        <option value="">📂 เลือกรหัสกลุ่มสินค้า</option>
+        {% for g in gcodes %}
+          <option value="{{ g.code }}" {% if selected_gcode == g.code %}selected{% endif %}>
+            {{ g.code }} - {{ g.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-4 col-12 d-flex gap-2">
+      <button type="submit" class="btn btn-primary">ค้นหา</button>
+      <a href="/product" class="btn btn-secondary">รีเซ็ต</a>
+    </div>
+  </form>
 
-    <table class="table table-bordered table-hover table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>ลำดับ</th>
-                <th style="display:none;">ID</th> <!-- 🔴 ซ่อนไม่แสดง ID -->
-                <th>รหัสกลุ่ม</th>
-                <th>รหัสสินค้า</th>
-                <th>ชื่อสินค้า</th>
-                <th>คงเหลือ</th>
-                <th>หน่วย</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in data %}
-            <tr>
-                <td>{{ loop.index }}</td> <!-- 🔴 รันนิ่งนัมเบอร์ -->
-                <td style="display:none;">{{ item.id }}</td> <!-- 🔴 ซ่อน ID -->
-                <td>{{ item.gcode }}</td>
-                <td>{{ item.code }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ "{:,.2f}".format(item.qty) }}</td> <!-- 🔴 ใส่ลูกน้ำหลักพัน -->
-                <td>{{ item.unit }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <div class="table-responsive">
+    <!-- 🔴 ตารางแสดงสินค้า -->
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>ลำดับ</th> <!-- 🔴 เพิ่มคอลัมน์รันนิ่งนัมเบอร์ -->
+      <th style="display:none;">ID</th> <!-- 🔴 ซ่อนคอลัมน์ ID -->
+      <th>รหัสสินค้า</th>
+      <th>ชื่อสินค้า</th>
+      <th>หน่วย</th>
+      <th>คงเหลือ</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data %}
+<tr>
+  <td>{{ loop.index }}</td> 
+      <td style="display:none;">{{ item.id }}</td> <!-- 🔴 ซ่อนไม่แสดง -->
+      <td>{{ item.gcode }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.unit }}</td>
+      <td>{{ "{:,.2f}".format(item.qty) }}</td> <!-- 🔴 ฟอร์แมตจำนวน -->
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- 🔴 จำนวนผลลัพธ์ทั้งหมด -->
+<div style="text-align: right; margin-top: 10px;">
+  <strong>พบทั้งหมด {{ products|length }} รายการ</strong>
 </div>
-</body>
-</html>
+
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      {% for p in range(1, total_pages + 1) %}
+        <li class="page-item {% if p == page %}active{% endif %}">
+          <a class="page-link" href="?q={{ keyword }}&gcode={{ selected_gcode }}&page={{ p }}">{{ p }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</div>
+{% endblock %}
