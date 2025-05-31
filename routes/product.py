@@ -59,6 +59,13 @@ def show_product():
         total_pages = math.ceil(total / per_page)
 
     conn.close()
+    # 🔴 แปลง qty เป็น float เพื่อใช้ format {:,.2f} ใน HTML
+    for row in products:
+        try:
+            row["qty"] = float(row["qty"])
+    except:
+        row["qty"] = 0.0
+
 
     return render_template("product.html",
                            data=products,
