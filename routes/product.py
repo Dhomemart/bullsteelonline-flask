@@ -13,65 +13,68 @@ def get_connection():
         password=os.getenv("RAILWAY_PASSWORD"),
         database=os.getenv("RAILWAY_DATABASE"),
         charset='utf8mb4',
-        cursorclass=pymysql.cursors.DictCursor
+        cursorclass=pymysql.cursors.DictCursor,
+        connect_timeout=10  # ⏰ เพิ่ม timeout ป้องกันหลุด
     )
-
 
 @product_bp.route("/product")
 def show_product():
-    keyword = request.args.get("q", "")
-    gcode = request.args.get("gcode", "")
-    page = int(request.args.get("page", 1))
-    per_page = 20
+    try:  # 🔴 เริ่ม try ที่นี่
+        keyword = request.args.get("q", "")
+        gcode = request.args.get("gcode", "")
+        page = int(request.args.get("page", 1))
+        per_page = 20
 
-    conn = get_connection()
-    with conn.cursor() as cur:
-        cur.execute("SELECT code, name FROM productgroup ORDER BY code")
-        gcodes = cur.fetchall()
+        conn = get_connection()
+        with conn.cursor() as cur:
+            cur.execute("SELECT code, name FROM productgroup ORDER BY code")
+            gcodes = cur.fetchall()
 
-        sql = """SELECT gcode, id, code, name, qty, unit FROM product WHERE qty > 0"""
-        count_sql = "SELECT COUNT(*) FROM product WHERE qty > 0"
+            sql = """SELECT gcode, id, code, name, qty, unit FROM product WHERE qty > 0"""
+            count_sql = "SELECT COUNT(*) FROM product WHERE qty > 0"
 
-        params = []
-        count_params = []
+            params = []
+            count_params = []
 
-        if gcode:
-            sql += " AND gcode = %s"
-            count_sql += " AND gcode = %s"
-            params.append(gcode)
-            count_params.append(gcode)
+            if gcode:
+                sql += " AND gcode = %s"
+                count_sql += " AND gcode = %s"
+                params.append(gcode)
+                count_params.append(gcode)
 
-        if keyword:
-            sql += " AND name LIKE %s"
-            count_sql += " AND name LIKE %s"
-            params.append(f"%{keyword}%")
-            count_params.append(f"%{keyword}%")
+            if keyword:
+                sql += " AND name LIKE %s"
+                count_sql += " AND name LIKE %s"
+                params.append(f"%{keyword}%")
+                count_params.append(f"%{keyword}%")
 
-        sql += " ORDER BY name LIMIT %s OFFSET %s"
-        offset = (page - 1) * per_page
-        params.extend([per_page, offset])
+            sql += " ORDER BY name LIMIT %s OFFSET %s"
+            offset = (page - 1) * per_page
+            params.extend([per_page, offset])
 
-        cur.execute(sql, tuple(params))
-        products = cur.fetchall()
+            cur.execute(sql, tuple(params))
+            products = cur.fetchall()
 
-        cur.execute(count_sql, tuple(count_params))
-        total = cur.fetchone()['COUNT(*)']
-        total_pages = math.ceil(total / per_page)
+            cur.execute(count_sql, tuple(count_params))
+            total = cur.fetchone()['COUNT(*)']
+            total_pages = math.ceil(total / per_page)
 
-    conn.close()
+        conn.close()
+
+        for row in products:
+            try:
+                row["qty"] = float(row["qty"])
+            except:
+                row["qty"] = 0.0
+
+        return render_template("product.html",
+                               products=products,
+                               columns=["gcode", "id", "code", "name", "qty", "unit"],
+                               keyword=keyword,
+                               gcodes=gcodes,
+                               selected_gcode=gcode,
+                               page=page,
+                               total_pages=total_pages)
     
-    # 🔧 แปลง qty เป็น float เพื่อให้ format {:,.2f} ได้
-    for row in products:
-        try:
-            row["qty"] = float(row["qty"])
-        except:
-            row["qty"] = 0.0
-
-    return render_template("product.html",
-                           products=products,
-                           columns=["gcode", "id", "code", "name", "qty", "unit"],
-                           keyword=keyword,
-                           gcodes=gcodes,
-                           selected_gcode=gcode,
-                           page=page,
-                           total_pages=total_pages)
+    except Exception as e:
+        return f"❌ เกิดข้อผิดพลาด: {e}"
